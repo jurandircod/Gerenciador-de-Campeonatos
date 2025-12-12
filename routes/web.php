@@ -11,6 +11,7 @@ use App\Http\Controllers\JuizesController;
 use App\Http\Controllers\FornecedoresController;
 use App\Http\Controllers\OrcamentosController;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\CompetidoresController;
 
 
 Route::get('/', [IndexController::class, 'index'])->name('home');
@@ -18,8 +19,17 @@ Route::get('/', [IndexController::class, 'index'])->name('home');
 
 Route::get('/api/responsaveis', [ResponsaveisController::class, 'getResponsaveis']);
 Route::post('/responsaveis/{id}', [ResponsaveisController::class, 'destroy'])->name('responsaveis.destroy');
-Route::get('/responsaveis/{id}/edit', [ResponsaveisController::class,'edit'])->name('responsaveis.edit');
-Route::post('/responsaveis/{id}/update', [ResponsaveisController::class,'update'])->name('responsaveis.update');
+Route::get('/responsaveis/{id}/edit', [ResponsaveisController::class, 'edit'])->name('responsaveis.edit');
+Route::post('/responsaveis/{id}/update', [ResponsaveisController::class, 'update'])->name('responsaveis.update');
+
+
+Route::group(['prefix' => 'competidores'], function () {
+    Route::get('/', [CompetidoresController::class, 'index'])->name('competidores.index');
+    Route::post('/create', [CompetidoresController::class, 'store'])->name('competidores.store');
+    Route::post('/delete/{id}', [CompetidoresController::class, 'destroy'])->name('competidores.destroy');
+    Route::get('/edit/{id}', [CompetidoresController::class, 'edit'])->name('competidores.edit');
+    Route::post('/update', [CompetidoresController::class, 'update'])->name('competidores.update');
+});
 
 Route::group(['prefix' => 'areas'], function () {
     Route::get('/', [AreasController::class, 'index'])->name('areas.index');
@@ -28,31 +38,34 @@ Route::group(['prefix' => 'areas'], function () {
     Route::get('/edit/{id}', [AreasController::class, 'edit'])->name('areas.edit');
     Route::post('/update', [AreasController::class, 'update'])->name('areas.update');
 });
-Route::group(['prefix'=> 'fornecedores'], function () {
+Route::group(['prefix' => 'fornecedores'], function () {
     Route::get('/', [FornecedoresController::class, 'index'])->name('fornecedores.index');
     Route::post('/create', [FornecedoresController::class, 'store'])->name('fornecedores.store');
-    Route::post('/delete', [FornecedoresController::class, 'destroy'])->name('fornecedores.destroy');
+    Route::post('/delete/{id}', [FornecedoresController::class, 'destroy'])->name('fornecedores.destroy');
     Route::get('/edit/{id}', [FornecedoresController::class, 'edit'])->name('fornecedores.edit');
+    Route::post('/update', [FornecedoresController::class, 'update'])->name('fornecedores.update');
 });
-Route::group(['prefix'=> 'patrocinadores'], function () {
+Route::group(['prefix' => 'patrocinadores'], function () {
     Route::get('/', [PatrocinadoresController::class, 'index'])->name('patrocinadores.index');
     Route::post('/create', [PatrocinadoresController::class, 'store'])->name('patrocinadores.store');
     Route::post('/delete/{id}', [PatrocinadoresController::class, 'destroy'])->name('patrocinadores.destroy');
     Route::get('/edit/{id}', [PatrocinadoresController::class, 'edit'])->name('patrocinadores.edit');
     Route::post('/update/{id}', [PatrocinadoresController::class, 'update'])->name('patrocinadores.update');
 });
-Route::group(['prefix'=> 'orcamentos'], function () {
+Route::group(['prefix' => 'orcamentos'], function () {
     Route::get('/', [OrcamentosController::class, 'index'])->name('orcamentos.index');
     Route::post('/create', [OrcamentosController::class, 'store'])->name('orcamentos.store');
-    Route::post('/delete', [OrcamentosController::class, 'destroy'])->name('orcamentos.destroy');
+    Route::post('/delete/{id}', [OrcamentosController::class, 'destroy'])->name('orcamentos.destroy');
     Route::get('/edit/{id}', [OrcamentosController::class, 'edit'])->name('orcamentos.edit');
+    Route::post('/update', [OrcamentosController::class, 'update'])->name('orcamentos.update');
 });
 
-Route::group(['prefix'=> 'juizes'], function () {
+Route::group(['prefix' => 'juizes'], function () {
     Route::get('/', [JuizesController::class, 'index'])->name('juizes.index');
     Route::post('/create', [JuizesController::class, 'store'])->name('juizes.store');
-    Route::post('/delete', [JuizesController::class, 'destroy'])->name('juizes.destroy');
+    Route::post('/delete/{id}', [JuizesController::class, 'destroy'])->name('juizes.destroy');
     Route::get('/edit/{id}', [JuizesController::class, 'edit'])->name('juizes.edit');
+    Route::post('/update', [JuizesController::class, 'update'])->name('juizes.update');
 });
 Route::group(['prefix' => 'tarefas'], function () {
     Route::get('/', [TarefasController::class, 'index'])->name('tarefas.index');

@@ -10,9 +10,12 @@ class Fornecedor extends Model
     
     protected $fillable = [
         'nome',
-        'email',
-        'telefone',
-        'experiencia',
-        'status'
+        'tipo',
+        'contato_telefone',
+        'contato_email',
+        'contato_nome',
+        'valor_orcamento',
+        'status',
+        'observacoes'
     ];
 }

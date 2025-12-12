@@ -11,8 +11,6 @@
                     </div>
                     <div class="flex gap-2">
                         <button id="exportCsv" class="px-4 py-2 bg-earth-600 text-white rounded">Exportar CSV</button>
-                        <a href="{{ route('patrocinadores.store') }}" class="px-4 py-2 border rounded text-earth-700">Novo
-                            patrocinador</a>
                     </div>
                 </header>
 

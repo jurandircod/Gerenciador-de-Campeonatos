@@ -18,8 +18,7 @@ return new class extends Migration {
             $table->string('estado')->nullable();
             $table->enum('status_inscricao', ['Pendente', 'Confirmada', 'Cancelada'])->default('Pendente');
             $table->timestamps();
-            $table->softDeletes(); // ← ADICIONE ESTA LINHA
-
+            $table->softDeletes();
         });
     }
 

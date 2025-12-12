@@ -24,7 +24,7 @@ class PatrocinadoresController extends Controller
     {
         $patrocinador = Patrocinador::findOrFail($id);
         $patrocinador->delete();
-        return back()->with('success', 'Patrocinador excluído com sucesso!');
+        return redirect()->route('patrocinadores.index')->with('success', 'Patrocinador cadastrado com sucesso!');
     }
 
     public function edit($id)

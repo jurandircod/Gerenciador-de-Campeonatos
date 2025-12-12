@@ -52,8 +52,7 @@ class TarefasController extends Controller
 
         Tarefa::create($request->all());
 
-        return redirect()->route('tarefas.index')
-            ->with('success', 'Tarefa cadastrada com sucesso!');
+        return back()->with('success', 'Tarefa cadastrada com sucesso!');
     }
 
     public function destroy($id)

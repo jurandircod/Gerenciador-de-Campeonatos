@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Organização - Evento de Skate (Tailwind Only)</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
@@ -66,35 +66,94 @@
                         </div>
                     </a>
 
-                    <nav class="mt-4">
-                        <h3 class="text-xs text-earth-600 uppercase tracking-wide mb-2">Navegação</h3>
-                        <ul class="space-y-1">
-                            <li><a href="{{ route('home') }}"
-                                    class="block px-3 py-2 rounded hover:bg-earth-50">Dashboard</a>
-                            </li>
-                            <li><a href="{{ route('tarefas.index') }}"
-                                    class="block px-3 py-2 rounded hover:bg-earth-50">Tarefas</a></li>
-                            <li><a href="{{ route('responsaveis.index') }}"
-                                    class="block px-3 py-2 rounded hover:bg-earth-50">Responsáveis</a></li>
-                            <li><a href="{{ route('areas.index') }}"
-                                    class="block px-3 py-2 rounded hover:bg-earth-50">Áreas</a>
-                            </li>
-                            <li><a href="{{ route('patrocinadores.index') }}"
-                                    class="block px-3 py-2 rounded hover:bg-earth-50">Patrocinadores</a></li>
-                            <li><a href="{{ route('fornecedores.index') }}"
-                                    class="block px-3 py-2 rounded hover:bg-earth-50">Fornecedores</a></li>
-                            <li><a href="{{ route('juizes.index') }}"
-                                    class="block px-3 py-2 rounded hover:bg-earth-50">Juízes</a></li>
-                            <li><a href="{{ route('orcamentos.index') }}"
-                                    class="block px-3 py-2 rounded hover:bg-earth-50">Orçamento</a></li>
-                        </ul>
-                    </nav>
+<nav class="mt-4" x-data="{ pessoas: false, campeonato: false }">
+    <h3 class="text-xs text-earth-600 uppercase tracking-wide mb-2">Navegação</h3>
+
+    <ul class="space-y-1">
+
+        {{-- Dashboard --}}
+        <li>
+            <a href="{{ route('home') }}"
+               class="block px-3 py-2 rounded hover:bg-earth-50">
+                Dashboard
+            </a>
+        </li>
+
+        {{-- ============================
+            GERENCIAR PESSOAS
+        ============================= --}}
+        <li>
+            <button @click="pessoas = !pessoas"
+                class="w-full flex justify-between items-center px-3 py-2 rounded hover:bg-earth-50 text-left">
+                <span>Gerenciar Pessoas</span>
+                <svg x-bind:class="pessoas ? 'rotate-90' : ''"
+                     class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                     viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+
+            <ul x-show="pessoas"
+                x-transition
+                class="ml-4 mt-1 space-y-1 border-l pl-3 border-earth-200">
+                
+                <li><a href="{{ route('competidores.index') }}"
+                       class="block px-3 py-2 rounded hover:bg-earth-50">Competidores</a></li>
+
+                <li><a href="{{ route('responsaveis.index') }}"
+                       class="block px-3 py-2 rounded hover:bg-earth-50">Responsáveis</a></li>
+
+                <li><a href="{{ route('juizes.index') }}"
+                       class="block px-3 py-2 rounded hover:bg-earth-50">Juízes</a></li>
+
+                <li><a href="{{ route('fornecedores.index') }}"
+                       class="block px-3 py-2 rounded hover:bg-earth-50">Fornecedores</a></li>
+            </ul>
+        </li>
+
+        {{-- ============================
+            GERENCIAR CAMPEONATO
+        ============================= --}}
+        <li>
+            <button @click="campeonato = !campeonato"
+                class="w-full flex justify-between items-center px-3 py-2 rounded hover:bg-earth-50 text-left">
+                <span>Gerenciar Campeonato</span>
+                <svg x-bind:class="campeonato ? 'rotate-90' : ''"
+                     class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                     viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+
+            <ul x-show="campeonato"
+                x-transition
+                class="ml-4 mt-1 space-y-1 border-l pl-3 border-earth-200">
+
+                <li><a href="{{ route('tarefas.index') }}"
+                       class="block px-3 py-2 rounded hover:bg-earth-50">Tarefas</a></li>
+
+                <li><a href="{{ route('areas.index') }}"
+                       class="block px-3 py-2 rounded hover:bg-earth-50">Áreas</a></li>
+
+                <li><a href="{{ route('patrocinadores.index') }}"
+                       class="block px-3 py-2 rounded hover:bg-earth-50">Patrocinadores</a></li>
+
+                <li><a href="{{ route('orcamentos.index') }}"
+                       class="block px-3 py-2 rounded hover:bg-earth-50">Orçamento</a></li>
+            </ul>
+        </li>
+
+    </ul>
+</nav>
+
 
                     <div class="mt-6 pt-4 border-t border-earth-100 text-sm text-earth-600">
                         <div>Eventos: <strong class="text-earth-800">Campeonato Municipal</strong></div>
                         <div class="mt-2">Sessões: <span
                                 class="inline-block bg-earth-200 text-earth-800 text-xs px-2 py-1 rounded">Qualificação</span>
-                            <span class="inline-block bg-earth-50 text-earth-800 text-xs px-2 py-1 rounded">Final</span>
+                            <span class="inline-block bg-earth-50 text-earth-800 text-xs px-2 py-1 rounded">1 Etapa</span>
                         </div>
                     </div>
                 </div>
@@ -117,7 +176,8 @@
                             class="block px-3 py-2 rounded hover:bg-earth-50">Tarefas</a>
                         <a href="{{ route('responsaveis.index') }}"
                             class="block px-3 py-2 rounded hover:bg-earth-50">Responsáveis</a>
-                        <a href="{{ route('areas.index') }}" class="block px-3 py-2 rounded hover:bg-earth-50">Áreas</a>
+                        <a href="{{ route('areas.index') }}"
+                            class="block px-3 py-2 rounded hover:bg-earth-50">Áreas</a>
                         <a href="{{ route('patrocinadores.index') }}"
                             class="block px-3 py-2 rounded hover:bg-earth-50">Patrocinadores</a>
                         <a href="{{ route('fornecedores.index') }}"
@@ -153,19 +213,19 @@
             extendedTimeOut: 1000
         };
 
-        @if(session('success'))
+        @if (session('success'))
             toastr.success("{{ session('success') }}");
         @endif
 
-        @if(session('error'))
+        @if (session('error'))
             toastr.error("{{ session('error') }}");
         @endif
 
-        @if(session('warning'))
+        @if (session('warning'))
             toastr.warning("{{ session('warning') }}");
         @endif
 
-        @if(session('info'))
+        @if (session('info'))
             toastr.info("{{ session('info') }}");
         @endif
 

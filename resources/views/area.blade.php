@@ -10,7 +10,6 @@
             <p class="text-sm text-earth-700/80">Cadastre as áreas do evento e vincule o responsável.</p>
           </div>
           <div class="flex gap-2">
-            <a href="{{ route('responsaveis.index') }}" class="px-4 py-2 border rounded text-earth-700">Responsáveis</a>
             <button id="exportCsv" class="px-4 py-2 bg-earth-600 text-white rounded">Exportar CSV</button>
           </div>
         </header>
