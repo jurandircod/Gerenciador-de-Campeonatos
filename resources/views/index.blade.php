@@ -212,50 +212,83 @@
         </div>
 
         <!-- MOBILE: card list (shown on small screens) -->
-        <div id="mobileTasksContainer" class="md:hidden mt-6 space-y-3">
-          @foreach($tarefas as $tarefa)
-            <article class="bg-earth-50 border border-earth-100 p-3 rounded-lg shadow-sm task-card" 
-                    data-titulo="{{ strtolower($tarefa->titulo) }}"
-                    data-descricao="{{ strtolower($tarefa->descricao) }}"
-                    data-responsavel="{{ $tarefa->responsavel_id }}"
-                    data-responsavel-nome="{{ strtolower($tarefa->responsavel->nome ?? '') }}">
-              <div class="flex justify-between items-start">
-                <div>
-                  <h3 class="font-semibold text-earth-800">{{ $tarefa->titulo }}</h3>
-                  <p class="text-sm text-earth-700 mt-1">{{ \Illuminate\Support\Str::limit($tarefa->descricao, 180) }}</p>
-                </div>
-                <div class="text-xs text-earth-600 text-right ml-2">
-                  <div>{{ $tarefa->prazo ? \Carbon\Carbon::parse($tarefa->prazo)->format('d/m/Y') : '—' }}</div>
-                  <div class="mt-2">
-                    <span
-                      class="inline-block px-2 py-1 rounded text-xs {{ $tarefa->prioridade == 'Alta' ? 'bg-red-100 text-red-800' : ($tarefa->prioridade == 'Média' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800') }}">
-                      {{ $tarefa->prioridade }}
-                    </span>
-                  </div>
-                </div>
-              </div>
+<div id="mobileTasksContainer" class="md:hidden mt-6 space-y-3">
+  @foreach($tarefas as $tarefa)
+    @php
+      $priorityBorder = $tarefa->prioridade == 'Alta'
+        ? 'border-l-4 border-red-600'
+        : ($tarefa->prioridade == 'Média'
+            ? 'border-l-4 border-yellow-500'
+            : 'border-l-4 border-green-600');
 
-              <div class="mt-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                <div class="text-sm text-earth-700">
-                  <div>Responsável: <strong>{{ $tarefa->responsavel->nome ?? '—' }}</strong></div>
-                  <div>Área: <strong>{{ $tarefa->area->nome ?? '—' }}</strong></div>
-                  <div>Prazo: <strong>{{ $tarefa->prazo ? \Carbon\Carbon::parse($tarefa->prazo)->format('d/m/Y') : '—' }}</strong></div>
-                  <div>Descrição: <strong>{{ $tarefa->descricao ?? '—' }}</strong></div>
-                </div>
+      $priorityBadge = $tarefa->prioridade == 'Alta'
+        ? 'bg-red-600 text-white'
+        : ($tarefa->prioridade == 'Média'
+            ? 'bg-yellow-500 text-black'
+            : 'bg-green-600 text-white');
+    @endphp
 
-                <div class="flex items-center gap-2">
-                  <a href="{{ route('tarefas.edit', $tarefa) }}" class="px-3 py-1 border rounded text-sm">Editar</a>
-
-                  <form action="{{ route('tarefas.destroy', [$tarefa->id]) }}" method="POST" class="inline-block"
-                    onsubmit="return confirm('Excluir essa tarefa?');">
-                    @csrf
-                    <button type="submit" class="px-3 py-1 border rounded text-sm text-red-600">Excluir</button>
-                  </form>
-                </div>
-              </div>
-            </article>
-          @endforeach
+    <article
+      class="bg-white p-4 rounded-xl shadow-md transition-shadow duration-150 ease-in-out {{ $priorityBorder }} task-card w-full"
+      data-titulo="{{ strtolower($tarefa->titulo) }}"
+      data-descricao="{{ strtolower($tarefa->descricao) }}"
+      data-responsavel="{{ $tarefa->responsavel_id }}"
+      data-responsavel-nome="{{ strtolower($tarefa->responsavel->nome ?? '') }}"
+      aria-label="Tarefa {{ $tarefa->titulo }}"
+    >
+      {{-- Top: título + data/badge (empilhado no mobile, inline em sm+) --}}
+      <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+        <div class="flex-1 min-w-0">
+          <h3 class="font-semibold text-gray-900 text-base sm:text-lg truncate">{{ $tarefa->titulo }}</h3>
+          <p class="text-sm text-gray-700 mt-1 line-clamp-3">{{ \Illuminate\Support\Str::limit($tarefa->descricao, 180) }}</p>
         </div>
+
+        <div class="flex-shrink-0 w-full sm:w-auto text-right">
+          <div class="text-sm text-gray-800">{{ $tarefa->prazo ? \Carbon\Carbon::parse($tarefa->prazo)->format('d/m/Y') : '—' }}</div>
+          <div class="mt-2">
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-medium {{ $priorityBadge }}">
+              {{ $tarefa->prioridade }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {{-- Middle: detalhes (sempre em coluna no mobile) --}}
+      <div class="mt-3 text-sm text-gray-700 space-y-1">
+        <div>Responsável: <strong class="text-gray-900">{{ $tarefa->responsavel->nome ?? '—' }}</strong></div>
+        <div>Área: <strong class="text-gray-900">{{ $tarefa->area->nome ?? '—' }}</strong></div>
+        <div>Prazo: <strong class="text-gray-900">{{ $tarefa->prazo ? \Carbon\Carbon::parse($tarefa->prazo)->format('d/m/Y') : '—' }}</strong></div>
+        <div>Descrição: <strong class="text-gray-900 break-words">{{ $tarefa->descricao ?? '—' }}</strong></div>
+      </div>
+
+      {{-- Bottom: ações (botões) - full width no mobile, inline no sm+ --}}
+      <div class="mt-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div class="flex gap-2 w-full sm:w-auto">
+          <a href="{{ route('tarefas.edit', $tarefa) }}"
+             class="flex-1 sm:flex-none text-center px-3 py-2 rounded-md text-sm bg-blue-600 text-white border border-transparent hover:bg-blue-700 transition">
+            Editar
+          </a>
+
+          <form action="{{ route('tarefas.destroy', [$tarefa->id]) }}" method="POST" class="inline-block w-full sm:w-auto"
+                onsubmit="return confirm('Excluir essa tarefa?');">
+            @csrf
+            <button type="submit"
+                    class="w-full sm:w-auto px-3 py-2 rounded-md text-sm bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 transition">
+              Excluir
+            </button>
+          </form>
+        </div>
+
+        {{-- espaço opcional para indicadores adicionais ou link --}}
+        <div class="flex-shrink-0 text-xs text-gray-500">
+          {{-- Ex.: status ou tag extra --}}
+          {{ $tarefa->status }}
+        </div>
+      </div>
+    </article>
+  @endforeach
+</div>
+
       </section>
     </div> {{-- end sessionsSection --}}
 
